@@ -20,10 +20,12 @@ async function getAllQuestions(req: Request, res: Response){
             description: 'question.description'
         })
     for(const question of questions) {
-        const options = await db('option').select({
-        description: 'option.description',
-        isRightAnswer: 'option.isRightAnswer'
-        }).where('questionID', question.ID)
+        const options = await db('option')
+            .select({
+                description: 'option.description',
+                isRightAnswer: 'option.isRightAnswer'
+            })
+            .where('questionID', question.ID)
         question.options = options
     }
     res.json(questions);
@@ -33,7 +35,7 @@ async function postQuestion (req: Request, res: Response)
 {
     const trx = await db.transaction()
     console.log(req.body)
-    try{
+    try {
         const question = {
             description: req.body.description,
         }
